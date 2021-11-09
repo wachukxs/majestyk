@@ -31,13 +31,6 @@ Route::post('/uploads', function() {
     // https://laracasts.com/discuss/channels/laravel/create-image-from-base64-string-laravel
     try {
         
-        // request()->file('selectedFile')->store('all-uploads'); // stores in storage/app
-
-        // request()->get('selectedFile')->store('all-uploads');
-        
-        // return response('Weldone', 200)->header('Content-Type', 'text/plain');
-
-     
         $image = request()->get('imagefile'); 
         Log::notice('**:' . $image . "\n");
         Log::notice('++:' . request()->get('imagetext') . "\n");
@@ -46,7 +39,7 @@ Route::post('/uploads', function() {
 
         $image = preg_replace("/^data:image\/[a-z]+;base64,/i", "", $image);
         $image = str_replace(' ', '+', $image);
-        $imageName = uniqid('user_image_') . '.' . $ext;
+        $imageName = uniqid('user_image_' . request()->get('imagetext')) . '.' . $ext;
         \File::put(storage_path(). '/' . $imageName, base64_decode($image));
         
 

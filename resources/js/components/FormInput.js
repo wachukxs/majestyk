@@ -55,7 +55,7 @@ function FormInput(props) {
                 <option value="original">Original</option>
                 <option value="square">Square</option>
                 <option value="small">Small</option>
-                <option value="all three">All Three</option>
+                <option value="all">All Three</option>
             </select>
 
             <br/>

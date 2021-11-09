@@ -2,7 +2,7 @@ import { useState } from "react"
 import ReactDOM from 'react-dom';
 
 function FormInput(props) {
-    const [uploadMethod, setUploadMethod] = useState('dog') // initialize to first option ?
+    const [uploadMethod, setUploadMethod] = useState('original') // initialize to first option ?
 
     const [selectedFile, setSelectedFile] = useState(null);
 
@@ -24,8 +24,8 @@ function FormInput(props) {
         console.log('submit');
 
         axios.post('http://localhost:8000/uploads', {
-            ...selectedFile,
-            ...uploadMethod
+            imagefile: selectedFile,
+            imagetext: uploadMethod
         })
         .then(response => {
             console.log('submitted', response)
@@ -52,15 +52,13 @@ function FormInput(props) {
             <label htmlFor="upload-select">Choose upload method:</label>
 
             <select name="upload-method" id="upload-select" onChange={handleSelectUploadChange}>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
-                <option value="hamster">Hamster</option>
-                <option value="parrot">Parrot</option>
+                <option value="original">Original</option>
+                <option value="square">Square</option>
+                <option value="small">Small</option>
+                <option value="all three">All Three</option>
             </select>
 
-            <span>{uploadMethod}</span>
-
-            <br />
+            <br/>
             <input type="file" onChange={handleFileUploadChange} />
 
             <br/>

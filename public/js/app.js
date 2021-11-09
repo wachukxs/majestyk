@@ -2139,12 +2139,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -2163,7 +2157,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function FormInput(props) {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('dog'),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('original'),
       _useState2 = _slicedToArray(_useState, 2),
       uploadMethod = _useState2[0],
       setUploadMethod = _useState2[1]; // initialize to first option ?
@@ -2188,7 +2182,10 @@ function FormInput(props) {
 
   var submitForm = function submitForm() {
     console.log('submit');
-    axios.post('http://localhost:8000/uploads', _objectSpread(_objectSpread({}, selectedFile), uploadMethod)).then(function (response) {
+    axios.post('http://localhost:8000/uploads', {
+      imagefile: selectedFile,
+      imagetext: uploadMethod
+    }).then(function (response) {
       console.log('submitted', response);
     })["catch"](function (err) {
       console.log(err);
@@ -2219,20 +2216,18 @@ function FormInput(props) {
       id: "upload-select",
       onChange: handleSelectUploadChange,
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
-        value: "dog",
-        children: "Dog"
+        value: "original",
+        children: "Original"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
-        value: "cat",
-        children: "Cat"
+        value: "square",
+        children: "Square"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
-        value: "hamster",
-        children: "Hamster"
+        value: "small",
+        children: "Small"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
-        value: "parrot",
-        children: "Parrot"
+        value: "all three",
+        children: "All Three"
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-      children: uploadMethod
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
       type: "file",
       onChange: handleFileUploadChange

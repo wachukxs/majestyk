@@ -73,3 +73,15 @@ laravel new majestyk-php
 npm install && npm run dev
 php artisan preset react 
  php artisan migrate
+
+
+ php artisan serve
+ php artisan passport:install
+
+ Encryption keys generated successfully.
+Personal access client created successfully.
+Client ID: 1
+Client secret: YRDZ0QykzdEYS3UfQuroyB67wZSQbFXsXgMbmQxA
+Password grant client created successfully.
+Client ID: 2
+Client secret: 5AYPtJcrDX1lRcAnoFpDCUdbOjtElbRppegF5jyo

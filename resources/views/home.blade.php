@@ -7,6 +7,8 @@
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
+                
+
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -15,7 +17,13 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
+                    
+                    <div id="the-form"></div>
+
                 </div>
+
+                <!-- <img src="{{ Storage::disk('local')->url('all-uploads/uniquename.png') }}" alt="Pic of user"> -->
             </div>
         </div>
     </div>

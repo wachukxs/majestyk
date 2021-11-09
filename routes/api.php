@@ -14,13 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::get('projects', 'ProjectController@index');
-Route::post('projects', 'ProjectController@store');
-Route::get('projects/{id}', 'ProjectController@show');
-Route::put('projects/{project}', 'ProjectController@markAsCompleted');
-Route::post('tasks', 'TaskController@store');
-Route::put('tasks/{task}', 'TaskController@markAsCompleted');
+// Route::get('projects', 'ProjectController@index');
+// Route::post('projects', 'ProjectController@store');
+// Route::get('projects/{id}', 'ProjectController@show');
+// Route::put('projects/{project}', 'ProjectController@markAsCompleted');
+// Route::post('tasks', 'TaskController@store');
+// Route::put('tasks/{task}', 'TaskController@markAsCompleted');
+
+Route::post('register',[App\Http\Controllers\SignUpController::class,'registerUser']);
+Route::post('login',[App\Http\Controllers\LogInController::class,'loginUser']);
+//add this middleware to ensure that every request is authenticated
+// Route::middleware('auth:api')->group(function(){
+//     Route::get('user', [passportAuthController::class,'authenticatedUserDetails']);
+// });

@@ -13,11 +13,11 @@ class CreatePhotoUploadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('photo_uploads', function (Blueprint $table) {
+        Schema::create('uploads', function (Blueprint $table) {
             $table->increments('id');// $table->id();
             $table->string('name');
             $table->string('url');
-            $table->string('user_id');
+            $table->string('user_id')->references('id')->on('users');
             $table->timestamps('created_at');
         });
     }
@@ -29,6 +29,6 @@ class CreatePhotoUploadsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('photo_uploads');
+        Schema::dropIfExists('uploads');
     }
 }

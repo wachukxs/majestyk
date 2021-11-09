@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class Uploads
+use Illuminate\Database\Eloquent\Model;
+
+class Uploads extends Model
 {
 
     public function tasks()

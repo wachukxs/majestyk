@@ -72,6 +72,7 @@ laravel new majestyk-php
  php artisan ui react    
 npm install && npm run dev
 php artisan preset react 
+php artisan migrate:reset
  php artisan migrate
 
 

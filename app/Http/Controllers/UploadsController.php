@@ -23,29 +23,36 @@ class UploadsController extends Controller
         // https://laracasts.com/discuss/channels/laravel/create-image-from-base64-string-laravel
         try {
             
-            $image = request()->get('imagefile');
-            Log::info('ERR:' . substr($image, 0 , 5) . "\n");
-
-            $ext = explode('/',explode(':', substr(request()->get('imagefile'), 0, strpos(request()->get('imagefile'), ';')))[1])[1];
-
-            $image = preg_replace("/^data:image\/[a-z]+;base64,/i", "", $image);
-            $image = str_replace(' ', '+', $image);
-            $imageName = uniqid('user_image_' . request()->get('imagetext')) . '.' . $ext;
-            \File::put(storage_path(). '/' . $imageName, base64_decode($image));
-
-
-            // Get the currently authenticated user...
-            $_user = Auth::user();
-
-            // Get the currently authenticated user's ID...
-            $_id = Auth::id();
-
-            $userUpload = new Uploads();
-
-            $userUpload->name = $imageName;
-            $userUpload->user_id = $_id;
-            $userUpload->url = storage_path() . '/' . $imageName; // redundant
-            $userUpload->save();
+            $imageArr = request()->get('imagefile');
+            if (is_array($imageArr)) {
+                foreach ($imageArr as $key => $image) {
+                    Log::info('Info:' . $key . substr($image, 0 , 5) . "\n");
+    
+                    $ext = explode('/',explode(':', substr($imageArr[$key], 0, strpos($imageArr[$key], ';')))[1])[1];
+    
+                    $image = preg_replace("/^data:image\/[a-z]+;base64,/i", "", $image);
+                    $image = str_replace(' ', '+', $image);
+                    $imageName = uniqid('user_image_' . request()->get('imagetext')) . '.' . $ext;
+                    \File::put(storage_path(). '/' . $imageName, base64_decode($image));
+    
+    
+                    // Get the currently authenticated user...
+                    $_user = Auth::user();
+    
+                    // Get the currently authenticated user's ID...
+                    $_id = Auth::id();
+    
+                    $userUpload = new Uploads();
+    
+                    $userUpload->name = $imageName;
+                    $userUpload->user_id = $_id;
+                    $userUpload->url = storage_path() . '/' . $imageName; // redundant
+                    $userUpload->save();
+                }
+            } else {
+                throw new Error();
+            }
+            
 
             return response()->json('Successfully added');
         } catch (\Throwable $th) {

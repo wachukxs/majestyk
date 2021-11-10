@@ -2162,15 +2162,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function CustomCropper(props) {
-  var defaultSrc = "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
+  // const defaultSrc = "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
   var cropperRef = (0,react__WEBPACK_IMPORTED_MODULE_2__.useRef)(null);
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(defaultSrc),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
       _useState2 = _slicedToArray(_useState, 2),
       image = _useState2[0],
-      setImage = _useState2[1];
+      setImage = _useState2[1]; // defaultSrc
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([]),
       _useState4 = _slicedToArray(_useState3, 2),
       cropData = _useState4[0],
       setCropData = _useState4[1];
@@ -2182,11 +2183,11 @@ function CustomCropper(props) {
 
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     console.log('it changed');
-    showCropOnPicture(); // getCropData()
+    showCropOnPicture();
   }, [props.imageSize]);
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     console.log('it doing');
-    setImage(props.imgIn);
+    setImage(props.imgIn[0]);
   }, [props.imgIn]);
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     props.updateImg(cropData);
@@ -2200,7 +2201,7 @@ function CustomCropper(props) {
   };
 
   var getCropData = function getCropData() {
-    console.log('cropping for', props.imageSize);
+    console.log('getCropData.cropping for', props.imageSize);
 
     if (typeof cropper !== "undefined") {
       console.log('cropper', cropper);
@@ -2210,22 +2211,34 @@ function CustomCropper(props) {
         console.log('cropped for square');
         setImageSize(cropper.getImageData().height > cropper.getImageData().width ? cropper.getImageData().width : cropper.getImageData().height); // use the least width or height of the image
 
-        setCropData(cropper.getCroppedCanvas().toDataURL());
-        setImage(cropData);
+        setCropData([cropper.getCroppedCanvas().toDataURL()]);
+        setImage(cropData[0]);
       } else if (props.imageSize == "small") {
         setImageSize(256);
-        setCropData(cropper.getCroppedCanvas().toDataURL());
-        setImage(cropData);
+        setCropData([cropper.getCroppedCanvas().toDataURL()]);
+        setImage(cropData[0]);
         console.log('cropped for small');
       } else if (props.imageSize == "all") {
-        setCropData(cropper.getCroppedCanvas().toDataURL());
-        setImage(cropData);
+        var n = []; // square
+
+        setImageSize(cropper.getImageData().height > cropper.getImageData().width ? cropper.getImageData().width : cropper.getImageData().height); // use the least width or height of the image
+
+        n.push(cropper.getCroppedCanvas().toDataURL());
+        cropper.reset(); // small
+
+        setImageSize(256);
+        n.push(cropper.getCroppedCanvas().toDataURL());
+        cropper.reset(); // original [do last]
+
+        n.push(cropper.getCroppedCanvas().toDataURL());
+        setCropData(n);
+        setImage(cropData[0]);
         console.log('cropped for all');
       } else {
         // original
         cropper.reset();
-        setCropData(cropper.getCroppedCanvas().toDataURL());
-        setImage(cropData);
+        setCropData([cropper.getCroppedCanvas().toDataURL()]);
+        setImage(cropData[0]);
         console.log('cropped for original'); // so won't do anything
         // setCropData(cropper.getCroppedCanvas().toDataURL());
       }
@@ -2233,19 +2246,22 @@ function CustomCropper(props) {
   };
 
   var showCropOnPicture = function showCropOnPicture() {
-    console.log('cropping for', props.imageSize);
+    console.log('showCropOnPicture.cropping for', props.imageSize);
 
     if (typeof cropper !== "undefined") {
       if (props.imageSize == "square") {
-        console.log('cropped for square');
+        console.log('img s i square');
         setImageSize(cropper.getImageData().height > cropper.getImageData().width ? cropper.getImageData().width : cropper.getImageData().height); // use the least width or height of the image
       } else if (props.imageSize == "small") {
         setImageSize(256);
+        console.log('img size small');
       } else if (props.imageSize == "all") {
         setImageSize(cropData);
+        console.log('img s is all');
       } else {
         // original
         cropper.reset();
+        console.log('cropper.reset()');
       }
     }
   };
@@ -2329,7 +2345,7 @@ function FormInput(props) {
       uploadMethod = _useState2[0],
       setUploadMethod = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState4 = _slicedToArray(_useState3, 2),
       selectedFile = _useState4[0],
       setSelectedFile = _useState4[1];
@@ -2353,7 +2369,9 @@ function FormInput(props) {
       createImage(evt.target.files[0]);
     }
 
-    console.log('evt.nativeEvent.target', evt.target.files.length);
+    console.log('evt.nativeEvent.target', evt.target.files.length); // reset drop down to original
+
+    setUploadMethod('original');
   };
 
   var submitForm = function submitForm() {
@@ -2374,7 +2392,7 @@ function FormInput(props) {
 
     reader.onload = function (e) {
       console.log('converted the pic');
-      setSelectedFile(e.target.result);
+      setSelectedFile([e.target.result]);
     };
 
     reader.readAsDataURL(file);
@@ -2388,6 +2406,7 @@ function FormInput(props) {
       name: "upload-method",
       id: "upload-select",
       onChange: handleSelectUploadChange,
+      value: uploadMethod,
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
         value: "original",
         children: "Original"
@@ -2403,6 +2422,7 @@ function FormInput(props) {
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
       type: "file",
+      accept: "image/x-png,image/jpeg",
       onChange: handleFileUploadChange
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CustomCropper__WEBPACK_IMPORTED_MODULE_2__["default"], {
       imgIn: selectedFile,

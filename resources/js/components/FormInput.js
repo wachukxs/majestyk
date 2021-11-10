@@ -5,7 +5,7 @@ import CustomCropper from './CustomCropper';
 function FormInput(props) {
     const [uploadMethod, setUploadMethod] = useState('original')
 
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState([]);
 
     const handleSelectUploadChange = (evt) => {
         console.log('setting upload value', evt.nativeEvent.target.value);
@@ -29,6 +29,8 @@ function FormInput(props) {
         }
 
         console.log('evt.nativeEvent.target', evt.target.files.length);
+        // reset drop down to original
+        setUploadMethod('original')
     }
 
 
@@ -50,7 +52,7 @@ function FormInput(props) {
         let reader = new FileReader();
         reader.onload = (e) => {
             console.log('converted the pic');
-            setSelectedFile(e.target.result)
+            setSelectedFile([e.target.result])
         };
         reader.readAsDataURL(file);
     }
@@ -59,7 +61,7 @@ function FormInput(props) {
         <div>
             <label htmlFor="upload-select">Choose upload method:</label>
 
-            <select name="upload-method" id="upload-select" onChange={handleSelectUploadChange}>
+            <select name="upload-method" id="upload-select" onChange={handleSelectUploadChange} value={uploadMethod}>
                 <option value="original">Original</option>
                 <option value="square">Square</option>
                 <option value="small">Small</option>
@@ -67,7 +69,7 @@ function FormInput(props) {
             </select>
 
             <br />
-            <input type="file" onChange={handleFileUploadChange} />
+            <input type="file" accept="image/x-png,image/jpeg" onChange={handleFileUploadChange} />
 
             <br />
                 {/* https://stackoverflow.com/a/66442653/9259701 */}

@@ -63,26 +63,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-
-
-#####
-laravel new majestyk-php 
- composer require laravel/ui
- php artisan ui react    
-npm install && npm run dev
-php artisan preset react 
-php artisan migrate:reset
- php artisan migrate
-
-
- php artisan serve
- php artisan passport:install
-
- Encryption keys generated successfully.
-Personal access client created successfully.
-Client ID: 1
-Client secret: YRDZ0QykzdEYS3UfQuroyB67wZSQbFXsXgMbmQxA
-Password grant client created successfully.
-Client ID: 2
-Client secret: 5AYPtJcrDX1lRcAnoFpDCUdbOjtElbRppegF5jyo

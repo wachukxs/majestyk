@@ -21,6 +21,8 @@
                     
                     <div id="the-form"></div>
 
+                    <div id="the-cropper"></div>
+
                 </div>
 
                 <!-- <img src="{{ Storage::disk('local')->url('all-uploads/uniquename.png') }}" alt="Pic of user"> -->

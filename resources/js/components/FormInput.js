@@ -1,5 +1,6 @@
 import { useState } from "react"
 import ReactDOM from 'react-dom';
+import CustomCropper from './CustomCropper';
 
 function FormInput(props) {
     const [uploadMethod, setUploadMethod] = useState('original') // initialize to first option ?
@@ -13,12 +14,22 @@ function FormInput(props) {
 
     const handleFileUploadChange = (evt) => {
 
+        evt.preventDefault();
+
+        let files;
+        if (evt.dataTransfer) {
+            files = evt.dataTransfer.files;
+        } else if (evt.target) {
+            files = evt.target.files;
+        }
+
         if (evt.target.files.length) {
             createImage(evt.target.files[0]);
         }
-        
+
         console.log('evt.nativeEvent.target', evt.target.files.length);
     }
+
 
     const submitForm = () => {
         console.log('submit');
@@ -26,8 +37,7 @@ function FormInput(props) {
         axios.post('http://localhost:8000/uploads', {
             imagefile: selectedFile,
             imagetext: uploadMethod
-        })
-        .then(response => {
+        }).then(response => {
             console.log('submitted', response)
         }).catch((err) => {
             console.log(err);
@@ -38,9 +48,6 @@ function FormInput(props) {
     const createImage = (file) => {
         let reader = new FileReader();
         reader.onload = (e) => {
-            //   this.setState({
-            //     image: e.target.result
-            //   })
             console.log('converted the pic');
             setSelectedFile(e.target.result)
         };
@@ -58,10 +65,12 @@ function FormInput(props) {
                 <option value="all">All Three</option>
             </select>
 
-            <br/>
+            <br />
             <input type="file" onChange={handleFileUploadChange} />
 
-            <br/>
+            <br />
+                <CustomCropper />
+            <br />
 
             <button onClick={submitForm}>Submit</button>
         </div>

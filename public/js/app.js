@@ -2291,6 +2291,7 @@ function CustomCropper(props) {
         setCropper(instance);
       }
     }, "guides", true)), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+      className: "btn btn-secondary mb-4",
       onClick: function onClick() {
         getCropData();
         console.log('updating ...');
@@ -2403,6 +2404,7 @@ function FormInput(props) {
       htmlFor: "upload-select",
       children: "Choose upload method:"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+      className: "form-control",
       name: "upload-method",
       id: "upload-select",
       onChange: handleSelectUploadChange,
@@ -2429,6 +2431,7 @@ function FormInput(props) {
       imageSize: uploadMethod,
       updateImg: setSelectedFile
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+      className: "btn btn-primary",
       onClick: submitForm,
       children: "Submit"
     })]

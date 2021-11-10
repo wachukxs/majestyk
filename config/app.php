@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Majestyk Task'),
+    'name' => env('APP_NAME', 'A Majestyk App'),
 
     /*
     |--------------------------------------------------------------------------

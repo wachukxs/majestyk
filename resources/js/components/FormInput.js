@@ -61,7 +61,7 @@ function FormInput(props) {
         <div>
             <label htmlFor="upload-select">Choose upload method:</label>
 
-            <select name="upload-method" id="upload-select" onChange={handleSelectUploadChange} value={uploadMethod}>
+            <select className="form-control" name="upload-method" id="upload-select" onChange={handleSelectUploadChange} value={uploadMethod}>
                 <option value="original">Original</option>
                 <option value="square">Square</option>
                 <option value="small">Small</option>
@@ -76,7 +76,7 @@ function FormInput(props) {
                 <CustomCropper imgIn={selectedFile} imageSize={uploadMethod} updateImg={setSelectedFile} />
             <br />
 
-            <button onClick={submitForm}>Submit</button>
+            <button className="btn btn-primary" onClick={submitForm}>Submit</button>
         </div>
     )
 }

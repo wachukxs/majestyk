@@ -125,7 +125,7 @@ function CustomCropper(props) {
             guides={true}
         />
 
-        <button onClick={() => {
+        <button className="btn btn-secondary mb-4" onClick={() => {
             getCropData()
             console.log('updating ...');
         }}>

@@ -24,6 +24,7 @@ class UploadsController extends Controller
         try {
             
             $image = request()->get('imagefile');
+            Log::info('ERR:' . substr($image, 0 , 5) . "\n");
 
             $ext = explode('/',explode(':', substr(request()->get('imagefile'), 0, strpos(request()->get('imagefile'), ';')))[1])[1];
 

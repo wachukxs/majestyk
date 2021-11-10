@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import CustomCropper from './CustomCropper';
 
 function FormInput(props) {
-    const [uploadMethod, setUploadMethod] = useState('original') // initialize to first option ?
+    const [uploadMethod, setUploadMethod] = useState('original')
 
     const [selectedFile, setSelectedFile] = useState(null);
 
     const handleSelectUploadChange = (evt) => {
-        setUploadMethod(evt.nativeEvent.target.value)
+        console.log('setting upload value', evt.nativeEvent.target.value);
+        setUploadMethod(evt.nativeEvent.target.value);
         // console.log('uploadMethod', uploadMethod); // uploadMethod isn't updating accurately // bug ??
     }
 
@@ -69,7 +70,8 @@ function FormInput(props) {
             <input type="file" onChange={handleFileUploadChange} />
 
             <br />
-                <CustomCropper />
+                {/* https://stackoverflow.com/a/66442653/9259701 */}
+                <CustomCropper imgIn={selectedFile} imageSize={uploadMethod} updateImg={setSelectedFile} />
             <br />
 
             <button onClick={submitForm}>Submit</button>

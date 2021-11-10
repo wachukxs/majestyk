@@ -2161,7 +2161,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function CustomCropper() {
+function CustomCropper(props) {
   var defaultSrc = "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
   var cropperRef = (0,react__WEBPACK_IMPORTED_MODULE_2__.useRef)(null);
 
@@ -2180,26 +2180,66 @@ function CustomCropper() {
       cropper = _useState6[0],
       setCropper = _useState6[1];
 
+  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    console.log('it changed');
+    getCropData();
+  }, [props.imageSize]);
+  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    console.log('it doing');
+    setImage(props.imgIn);
+  }, [props.imgIn]);
+
   var onCrop = function onCrop() {
     if (cropperRef) {
       var imageElement = cropperRef.current;
-      var _cropper = imageElement.cropper;
-      console.log('onCrop: ', _cropper.getCroppedCanvas().toDataURL());
+      var _cropper = imageElement.cropper; // console.log('onCrop: ', cropper.getCroppedCanvas().toDataURL());
     }
   };
 
   var getCropData = function getCropData() {
-    console.log('cropping');
+    console.log('cropping for', props.imageSize);
 
     if (typeof cropper !== "undefined") {
-      console.log('cropped');
-      setCropData(cropper.getCroppedCanvas().toDataURL());
+      console.log('cropper', cropper);
+      console.log('date', cropper.getImageData());
+
+      if (props.imageSize == "square") {
+        console.log('cropped for square');
+        setImageSize(cropper.getImageData().height > cropper.getImageData().width ? cropper.getImageData().width : cropper.getImageData().height); // use the least width or height of the image
+
+        setCropData(cropper.getCroppedCanvas().toDataURL());
+        setImage(cropData);
+      } else if (props.imageSize == "small") {
+        setImageSize(256);
+        setCropData(cropper.getCroppedCanvas().toDataURL());
+        setImage(cropData);
+        console.log('cropped for small');
+      } else if (props.imageSize == "all") {
+        setCropData(cropper.getCroppedCanvas().toDataURL());
+        setImage(cropData);
+        console.log('cropped for all');
+      } else {
+        // original
+        cropper.reset();
+        setImage(cropData);
+        console.log('cropped for original'); // so won't do anything
+        // setCropData(cropper.getCroppedCanvas().toDataURL());
+      }
     }
+  };
+
+  var setImageSize = function setImageSize(size) {
+    cropper.setCropBoxData({
+      left: cropper.getCanvasData().left,
+      top: cropper.getCanvasData().top,
+      width: size,
+      height: size
+    });
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_cropper__WEBPACK_IMPORTED_MODULE_0__["default"], _defineProperty({
-      src: "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg",
+      src: image,
       style: {
         height: 400,
         width: "100%"
@@ -2213,7 +2253,11 @@ function CustomCropper() {
         setCropper(instance);
       }
     }, "guides", true)), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-      onClick: getCropData,
+      onClick: function onClick() {
+        getCropData();
+        console.log('updating ...', cropData);
+        props.updateImg(cropData);
+      },
       children: "Crop Image"
     })]
   });
@@ -2262,8 +2306,7 @@ function FormInput(props) {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('original'),
       _useState2 = _slicedToArray(_useState, 2),
       uploadMethod = _useState2[0],
-      setUploadMethod = _useState2[1]; // initialize to first option ?
-
+      setUploadMethod = _useState2[1];
 
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
       _useState4 = _slicedToArray(_useState3, 2),
@@ -2271,6 +2314,7 @@ function FormInput(props) {
       setSelectedFile = _useState4[1];
 
   var handleSelectUploadChange = function handleSelectUploadChange(evt) {
+    console.log('setting upload value', evt.nativeEvent.target.value);
     setUploadMethod(evt.nativeEvent.target.value); // console.log('uploadMethod', uploadMethod); // uploadMethod isn't updating accurately // bug ??
   };
 
@@ -2339,7 +2383,11 @@ function FormInput(props) {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
       type: "file",
       onChange: handleFileUploadChange
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CustomCropper__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_CustomCropper__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      imgIn: selectedFile,
+      imageSize: uploadMethod,
+      updateImg: setSelectedFile
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
       onClick: submitForm,
       children: "Submit"
     })]

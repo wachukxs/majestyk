@@ -12,12 +12,19 @@ function CustomCropper(props) {
 
     useEffect(()=>{
         console.log('it changed');
-        getCropData()
+        showCropOnPicture() // getCropData()
     }, [props.imageSize])
+
     useEffect(()=>{
         console.log('it doing');
         setImage(props.imgIn)
     }, [props.imgIn])
+
+    useEffect(()=>{
+        props.updateImg(cropData)
+    }, [cropData])
+
+    
     
 
     const onCrop = () => {
@@ -51,9 +58,32 @@ function CustomCropper(props) {
                 console.log('cropped for all');
             } else { // original
                 cropper.reset()
+                setCropData(cropper.getCroppedCanvas().toDataURL());
                 setImage(cropData)
                 console.log('cropped for original'); // so won't do anything
                 // setCropData(cropper.getCroppedCanvas().toDataURL());
+            }
+        }
+    };
+
+
+    const showCropOnPicture = () => {
+        console.log('cropping for', props.imageSize);
+        
+        if (typeof cropper !== "undefined") {
+
+            if (props.imageSize == "square") {
+                console.log('cropped for square');
+                setImageSize(cropper.getImageData().height > cropper.getImageData().width ? cropper.getImageData().width : cropper.getImageData().height ) // use the least width or height of the image
+
+            } else if (props.imageSize == "small") {
+                setImageSize(256)
+        
+            } else if (props.imageSize == "all") {
+                setImageSize(cropData)
+              
+            } else { // original
+                cropper.reset()
             }
         }
     };
@@ -85,8 +115,7 @@ function CustomCropper(props) {
 
         <button onClick={() => {
             getCropData()
-            console.log('updating ...', cropData);
-            props.updateImg(cropData)
+            console.log('updating ...');
         }}>
             Crop Image
         </button>

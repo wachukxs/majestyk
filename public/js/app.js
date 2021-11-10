@@ -2182,12 +2182,15 @@ function CustomCropper(props) {
 
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     console.log('it changed');
-    getCropData();
+    showCropOnPicture(); // getCropData()
   }, [props.imageSize]);
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     console.log('it doing');
     setImage(props.imgIn);
   }, [props.imgIn]);
+  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    props.updateImg(cropData);
+  }, [cropData]);
 
   var onCrop = function onCrop() {
     if (cropperRef) {
@@ -2221,9 +2224,28 @@ function CustomCropper(props) {
       } else {
         // original
         cropper.reset();
+        setCropData(cropper.getCroppedCanvas().toDataURL());
         setImage(cropData);
         console.log('cropped for original'); // so won't do anything
         // setCropData(cropper.getCroppedCanvas().toDataURL());
+      }
+    }
+  };
+
+  var showCropOnPicture = function showCropOnPicture() {
+    console.log('cropping for', props.imageSize);
+
+    if (typeof cropper !== "undefined") {
+      if (props.imageSize == "square") {
+        console.log('cropped for square');
+        setImageSize(cropper.getImageData().height > cropper.getImageData().width ? cropper.getImageData().width : cropper.getImageData().height); // use the least width or height of the image
+      } else if (props.imageSize == "small") {
+        setImageSize(256);
+      } else if (props.imageSize == "all") {
+        setImageSize(cropData);
+      } else {
+        // original
+        cropper.reset();
       }
     }
   };
@@ -2255,8 +2277,7 @@ function CustomCropper(props) {
     }, "guides", true)), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
       onClick: function onClick() {
         getCropData();
-        console.log('updating ...', cropData);
-        props.updateImg(cropData);
+        console.log('updating ...');
       },
       children: "Crop Image"
     })]

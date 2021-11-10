@@ -16,7 +16,7 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    {{ __('You are logged in! Choose an image to begin') }}
 
                     
                     <div id="the-form"></div>

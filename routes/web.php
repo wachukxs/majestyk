@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage; // https://stackoverflow.com/a/48154076/9259701
 use Illuminate\Support\Facades\File;
 
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,7 +18,12 @@ use Illuminate\Support\Facades\File;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    
+    if (auth()->user()) {
+        return view('home'); // return redirect(route('home'));
+    } else {
+        return view('welcome'); // return redirect(route('login'));
+    }
 });
 
 Auth::routes(); // ??

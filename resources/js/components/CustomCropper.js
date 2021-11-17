@@ -35,47 +35,65 @@ function CustomCropper(props) {
         }
     };
 
+    const setSmallCrop = () => {
+        setImageSize(256)
+        setCropData([cropper.getCroppedCanvas().toDataURL()]);
+        setImage(cropData[0])
+        console.log('cropped for small');
+    }
+
+    const setSquareCrop = () => {
+        console.log('cropped for square');
+        setImageSize(getLeastWidthOrHeight()) // use the least width or height of the image
+        setCropData([cropper.getCroppedCanvas().toDataURL()]);
+        setImage(cropData[0])
+    }
+
+    const setOriginalCrop = () => {
+        cropper.reset()
+        setCropData([cropper.getCroppedCanvas().toDataURL()]);
+        setImage(cropData[0])
+        console.log('cropped for original'); // so won't do anything
+        // setCropData(cropper.getCroppedCanvas().toDataURL());
+    }
+
+    const setAllSizesCrop = () => {
+        let n = []
+        // square
+        setImageSize(getLeastWidthOrHeight()) // use the least width or height of the image
+        n.push(cropper.getCroppedCanvas().toDataURL())
+        cropper.reset()
+        // small
+        setImageSize(256)
+        n.push(cropper.getCroppedCanvas().toDataURL());
+        cropper.reset()
+        // original [do last]
+        n.push(cropper.getCroppedCanvas().toDataURL());
+        setCropData(n)
+        setImage(cropData[0])
+        console.log('cropped for all');
+    }
+
     const getCropData = () => {
         console.log('getCropData.cropping for', props.imageSize);
         
         if (typeof cropper !== "undefined") {
-            console.log('cropper', cropper);
-            console.log('date', cropper.getImageData());
-
-            if (props.imageSize == "square") {
-                console.log('cropped for square');
-                setImageSize(cropper.getImageData().height > cropper.getImageData().width ? cropper.getImageData().width : cropper.getImageData().height ) // use the least width or height of the image
-                setCropData([cropper.getCroppedCanvas().toDataURL()]);
-                setImage(cropData[0])
-            } else if (props.imageSize == "small") {
-                setImageSize(256)
-                setCropData([cropper.getCroppedCanvas().toDataURL()]);
-                setImage(cropData[0])
-                console.log('cropped for small');
-            } else if (props.imageSize == "all") {
-                let n = []
-                // square
-                setImageSize(cropper.getImageData().height > cropper.getImageData().width ? cropper.getImageData().width : cropper.getImageData().height ) // use the least width or height of the image
-                n.push(cropper.getCroppedCanvas().toDataURL())
-                cropper.reset()
-                // small
-                setImageSize(256)
-                n.push(cropper.getCroppedCanvas().toDataURL());
-                cropper.reset()
-                // original [do last]
-                n.push(cropper.getCroppedCanvas().toDataURL());
-                setCropData(n)
-                setImage(cropData[0])
-                console.log('cropped for all');
+            if (props.imageSize === "square") {
+                setSquareCrop()
+            } else if (props.imageSize === "small") {
+                setSmallCrop()
+            } else if (props.imageSize === "all") {
+                setAllSizesCrop()
             } else { // original
-                cropper.reset()
-                setCropData([cropper.getCroppedCanvas().toDataURL()]);
-                setImage(cropData[0])
-                console.log('cropped for original'); // so won't do anything
-                // setCropData(cropper.getCroppedCanvas().toDataURL());
+                setOriginalCrop()
             }
         }
     };
+
+    // get the least width or height of the image
+    const getLeastWidthOrHeight = () => {
+        return cropper.getImageData().height > cropper.getImageData().width ? cropper.getImageData().width : cropper.getImageData().height
+    }
 
 
     const showCropOnPicture = () => {
@@ -84,18 +102,13 @@ function CustomCropper(props) {
         if (typeof cropper !== "undefined") {
 
             if (props.imageSize == "square") {
-                console.log('img s i square');
-                setImageSize(cropper.getImageData().height > cropper.getImageData().width ? cropper.getImageData().width : cropper.getImageData().height ) // use the least width or height of the image
-
+                setImageSize(getLeastWidthOrHeight())
             } else if (props.imageSize == "small") {
                 setImageSize(256)
-                console.log('img size small');
-            } else if (props.imageSize == "all") {
+            } else if (props.imageSize === "all") {
                 setImageSize(cropData)
-                console.log('img s is all');
             } else { // original
                 cropper.reset()
-                console.log('cropper.reset()');
             }
         }
     };

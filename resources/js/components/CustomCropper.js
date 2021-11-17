@@ -90,7 +90,7 @@ function CustomCropper(props) {
         }
     };
 
-    // get the least width or height of the image
+    // get the shorter side (width or height) of the image
     const getLeastWidthOrHeight = () => {
         return cropper.getImageData().height > cropper.getImageData().width ? cropper.getImageData().width : cropper.getImageData().height
     }
